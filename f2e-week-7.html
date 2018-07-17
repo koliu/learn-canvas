@@ -25,7 +25,9 @@
     const $cx = $w / 2;
     const $cy = $h / 2;
     const $divides = 3;
+    /* base width */
     const $bw = $w / $divides;
+    /* base height */
     const $bh = $h / $divides;
     console.log(
       `$w=${$w}`,
@@ -37,21 +39,30 @@
 
     const ctx = draw1.getContext ? draw1.getContext("2d") : undefined;
 
-    // draw grid
-    Array.from(Array($divides).keys()).forEach(i => {
-      ctx.beginPath();
-      ctx.moveTo($bw * i, 0);
-      ctx.lineTo($bw * i, $h);
-      ctx.closePath();
-      ctx.strokeStyle = 'rgba(0, 255, 0, 0.3)';
-      ctx.stroke();
+    const lineX = new Path2D();
+    lineX.moveTo(0, 0);
+    lineX.lineTo($w, 0);
+    lineX.closePath();
 
-      ctx.beginPath();
-      ctx.moveTo(0, $bh * i);
-      ctx.lineTo($w, $bh * i);
-      ctx.closePath();
-      ctx.strokeStyle = 'rgba(0, 255, 0, 0.3)';
-      ctx.stroke();
+    const lineY = new Path2D();
+    lineY.moveTo(0, 0);
+    lineY.lineTo(0, $h);
+    lineY.closePath();
+
+    ctx.save();
+    
+    ctx.strokeStyle = 'rgba(0, 255, 0, 0.3)';
+    // draw grid lines
+    Array.from(Array($divides - 1).keys()).forEach(i => {
+      const tempI = i + 1;
+
+      ctx.translate($bw * tempI, 0);
+      ctx.stroke(lineY);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+      ctx.translate(0, $bh * tempI);
+      ctx.stroke(lineX);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
     })
 
     // draw origin
@@ -111,7 +122,6 @@
     ctx.fillText('你身負著運送能量電池的任務', tempX, tempY);
     ctx.fillText('卻遭到幾何星人的埋伏', tempX, tempY + 20);
     ctx.fillText('請協助從他們的手中奪回能量電池', tempX, tempY + 40);
-
   </script>
 
   <style>

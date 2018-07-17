@@ -93,3 +93,40 @@ arc(x, y, radius, startAngle, endAngle, anticlockwise);
   - square: 線條頭尾各延伸 1/2 lineWidth
 - lineJoin: 設定線條和線條間接合處的樣式。
 - miterLimit: 限制當兩條線相交時交接處最大長度；所謂交接處長度(miter length)是指線條交接處內角頂點到外角頂點的長度。
+
+### Reset Path Initial Parameters(Scaling, Translate...)
+
+> Canvas 預設每一個 path 的起始參數(scale, translate...)都是根據前一個 path 為基礎，
+> 若不想則必須進行參數重置。
+
+#### 兩種做法
+
+- context.setTransform: 適用於只想改變縮放、變形、位移。(效能較佳)
+
+```js
+/*
+ * a: Horizontal scaling
+ * b: Horizontal skewing
+ * c: Vertical skewing
+ * d: Vertical scaling
+ * e: Horizontal moving
+ * f: Vertical moving
+ */
+context.setTransform(a, b, c, d, e, f);
+```
+
+- context.save & context.restore: 適用於回復到上一個記錄點(所有的 context parameters)。
+
+```js
+context.save(); // save all current params of context
+
+/* ... */
+
+context.restore();
+```
+
+#### References
+
+- [How can I reset the scale of a canvas' context?](https://stackoverflow.com/questions/33694446/how-can-i-reset-the-scale-of-a-canvas-context)
+- [HTML5 translate method, how to reset to default?](https://stackoverflow.com/a/17559846)
+- [MDN setTransform documentation](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setTransform)
