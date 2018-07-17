@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <canvas id="draw1" width="720" height="480">
+    這裡有個 canvas，但您的瀏覽器不支援！
+  </canvas>
+
+  <script>
+    const $white = 'rgb(255, 255, 255)';
+    const $red = '#E7465D';
+    const $yellow = '#F5AF5F'
+    const $blue = '#3676BB'
+    const $bgBlue = '#001D2E';
+    const draw1 = document.querySelector("#draw1");
+    const $w = draw1.offsetWidth;
+    const $h = draw1.offsetHeight;
+    const $cx = $w / 2;
+    const $cy = $h / 2;
+    const $divides = 3;
+    const $bw = $w / $divides;
+    const $bh = $h / $divides;
+    console.log(
+      `$w=${$w}`,
+      `$h=${$h}`,
+      `$bw=${$bw}`,
+      `$bh=${$bh}`
+    );
+    let tempX, tempY;
+
+    const ctx = draw1.getContext ? draw1.getContext("2d") : undefined;
+
+    // draw grid
+    Array.from(Array($divides).keys()).forEach(i => {
+      ctx.beginPath();
+      ctx.moveTo($bw * i, 0);
+      ctx.lineTo($bw * i, $h);
+      ctx.closePath();
+      ctx.strokeStyle = 'rgba(0, 255, 0, 0.3)';
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(0, $bh * i);
+      ctx.lineTo($w, $bh * i);
+      ctx.closePath();
+      ctx.strokeStyle = 'rgba(0, 255, 0, 0.3)';
+      ctx.stroke();
+    })
+
+    // draw origin
+    ctx.beginPath();
+    ctx.arc($cx, $cy, 2, 0, Math.PI * 2 / 180, true);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(0, 255, 0, 0.3)';
+    ctx.fill();
+
+    // draw outer circle
+    ctx.beginPath();
+    ctx.arc($cx, $cy, (0.5 + 2 / 3) * $bh, 0, Math.PI * 2 / 180, true);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // draw inner circle
+    ctx.beginPath();
+    ctx.arc($cx, $cy, (0.5 + 1 / 3) * $bh, 0, Math.PI * 2 / 180, true);
+    ctx.strokeStyle = $white;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // top-right yellow circle
+    ctx.beginPath();
+    ctx.arc($bw * 2.5, $bh / 3 * 1.7, 0.2 * $bh, 0, Math.PI * 2 / 180, true);
+    ctx.fillStyle = $yellow;
+    ctx.fill();
+
+    // bottom triangle
+    tempX = $bw * 2.2;
+    tempY = $bh * 2.1;
+    ctx.beginPath();
+    ctx.moveTo(tempX, tempY);
+    ctx.lineTo(tempX - 45, tempY + 70);
+    ctx.lineTo(tempX + 35, tempY + 75);
+    ctx.fillStyle = $blue;
+    ctx.fill();
+
+    // top-left hexagon
+    tempX = $bw * 0.17;
+    tempY = $bh * 0.8;
+    ctx.beginPath();
+    ctx.moveTo(tempX - 5, tempY + 5);
+    ctx.lineTo(tempX + 35, tempY - 10);
+    ctx.lineTo(tempX + 70, tempY + 5);
+    ctx.lineTo(tempX + 75, tempY + 30);
+    ctx.lineTo(tempX + 55, tempY + 60);
+    ctx.lineTo(tempX + 10, tempY + 45);
+    ctx.fillStyle = $red;
+    ctx.fill();
+
+    tempX = $bw * 0.13;
+    tempY = $bh * 2.5;
+    ctx.font = "10pt Roboto";
+    ctx.fillStyle = $white;
+    ctx.fillText('你身負著運送能量電池的任務', tempX, tempY);
+    ctx.fillText('卻遭到幾何星人的埋伏', tempX, tempY + 20);
+    ctx.fillText('請協助從他們的手中奪回能量電池', tempX, tempY + 40);
+
+  </script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #draw1 {
+      background-color: #001D2E;
+    }
+  </style>
+</body>
+
+</html>
