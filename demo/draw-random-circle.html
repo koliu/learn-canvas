@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:400,700i,900" rel="stylesheet"> -->
+</head>
+
+<body>
+  <canvas id="draw1">
+    這裡有個 canvas，但您的瀏覽器不支援！
+  </canvas>
+
+  <script>
+    const draw1 = document.getElementById("draw1");
+    const ctx = draw1.getContext("2d");
+    draw1.width = window.innerWidth;
+    draw1.height = window.innerHeight;
+    const $w = draw1.offsetWidth;
+    const $h = draw1.offsetHeight;
+
+    const drawer = ctx => {
+      return {
+        context: ctx,
+        point(x, y, r, fillStyle, strokeStyle) {
+          // console.log(
+          //   `x=${x}`,
+          //   `y=${y}`,
+          //   `r=${r}`,
+          //   `fillStyle=${fillStyle}`,
+          //   `strokeStyle=${strokeStyle}`
+          // );
+          this.context.save();
+          this.context.beginPath();
+          this.context.arc(x, y, r, 0, Math.PI * 2, false);
+          if (fillStyle) {
+            this.context.fillStyle = fillStyle;
+            this.context.fill();
+          }
+          if (strokeStyle) {
+            this.context.strokeStyle = strokeStyle;
+            this.context.stroke();
+          }
+          this.context.closePath();
+          this.context.restore();
+        }
+      };
+    };
+
+    const drawer1 = drawer(ctx);
+    Array.from(Array(100).keys()).forEach(i => {
+      const r = Math.floor(Math.random() * 5) + 1;
+      const x = Math.floor(Math.random() * $w) + 1;
+      const y = Math.floor(Math.random() * $h) + 1;
+      const color = r % 2 === 0 ? 'red' : 'green';
+      const fillStyle = x % 2 === 0 ? color : undefined;
+      const strokeStyle = y % 2 === 0 ? color : undefined;
+      ctx.moveTo(x, y); // remove the line between points
+      drawer1.point(x, y, r, fillStyle, strokeStyle);
+    });
+  </script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    #draw1 {
+      background-color: #001D2E;
+    }
+  </style>
+</body>
+
+</html>

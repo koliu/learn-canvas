@@ -59,6 +59,7 @@
 // startAngle: 代表沿著弧形曲線上的起始點的弧度
 // endAngle: 代表沿著弧形曲線上的結束點的弧度
 // anticlockwise: true 代表逆時針作畫
+// 弧度換算成角度：0 ~ 360 要寫成 0 ~ 2 * Math.PI
 arc(x, y, radius, startAngle, endAngle, anticlockwise);
 ```
 
@@ -94,14 +95,20 @@ arc(x, y, radius, startAngle, endAngle, anticlockwise);
 - lineJoin: 設定線條和線條間接合處的樣式。
 - miterLimit: 限制當兩條線相交時交接處最大長度；所謂交接處長度(miter length)是指線條交接處內角頂點到外角頂點的長度。
 
-### Reset Path Initial Parameters(Scaling, Translate...)
+---
+
+### 繪製起始點的移動
+
+- translate(x, y): 由當下的起始點位置開始偏移
+- rotate(deg): 由當下的起始點位置為原心進行旋轉 deg
+- scale(x, y): 由當下的起始點位置為中心縮放(縮放後，距離的計算也會跟著縮放)
+
+#### Reset Path Initial Parameters(Scaling, Translate...)
 
 > Canvas 預設每一個 path 的起始參數(scale, translate...)都是根據前一個 path 為基礎，
 > 若不想則必須進行參數重置。
 
-#### 兩種做法
-
-- context.setTransform: 適用於只想改變縮放、變形、位移。(效能較佳)
+方法一：context.setTransform: 適用於只想改變縮放、變形、位移。(效能較佳)
 
 ```js
 /*
@@ -115,7 +122,7 @@ arc(x, y, radius, startAngle, endAngle, anticlockwise);
 context.setTransform(a, b, c, d, e, f);
 ```
 
-- context.save & context.restore: 適用於回復到上一個記錄點(所有的 context parameters)。
+方法二：context.save & context.restore: 適用於回復到上一個記錄點(所有的 context parameters)。
 
 ```js
 context.save(); // save all current params of context
@@ -125,8 +132,97 @@ context.save(); // save all current params of context
 context.restore();
 ```
 
-#### References
+save/restore 是 stack，所以是先進先出的概念：
+
+```js
+
+context.save(); // save-1
+
+context.save(); // save-2
+
+context.restore(); // restore to save-2
+
+context.restore(); // restore to save-1
+```
+
+可以利用函數把一段圖型的狀態變化封裝在函數內：
+
+```js
+function draw(ctx, ...args) {
+  ctx.save(); // 儲存進函數前的狀態
+  ...
+  ctx.restore(); // 還原至進函數前的狀態
+}
+```
+
+
+References:
 
 - [How can I reset the scale of a canvas' context?](https://stackoverflow.com/questions/33694446/how-can-i-reset-the-scale-of-a-canvas-context)
 - [HTML5 translate method, how to reset to default?](https://stackoverflow.com/a/17559846)
 - [MDN setTransform documentation](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setTransform)
+
+---
+
+### 動畫
+
+- setInterval(update, time)
+- requestAnimationFrame(update)
+- 更新影格：
+  - clearRect 或 fillRect
+  - 覆蓋前次繪製的圖形
+
+### 互動
+
+- canvas.addEventlistener("mousemove", () => {})
+- canvas.addEventlistener("mousedown", () => {})
+- canvas.addEventlistener("mouseup", () => {})
+- canvas.addEventlistener("click", () => {})
+
+### 程式結構
+
+1. init: 初始化會使用到的物件及參數
+2. update: 更新邏輯
+3. draw: 更新畫面
+
+```js
+function init() {
+
+}
+
+function update() {
+
+}
+setInterval(update, time); // 定時更新邏輯
+
+draw() {
+  clearScreen();
+  ...
+  requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw); // 儘快刷新畫面(不定時)
+
+```
+
+### 物理基礎
+
+- 無法精確描述軌跡，但可利用兩兩變化量來累積差異(微分概念)
+- 速度=位置的變化量(在同一時間速率下)
+- 加速度=速度的變化量
+- xy 座標：
+  - 指定長度與角度(極座標，類似 rotate())
+  - 指定 x 與 y
+- 三角函數：取角度用 atan2(y, x)
+  - cos = 鄰邊 / 斜邊 = 斜邊的 x 分量
+  - sin =　對邊 / 斜邊 = 斜邊的 y 分量
+  - tan = 對邊 / 鄰邊 = x 與 y 分量的比例
+  - (r, Θ) to (x, y):
+    - x = r * cos(Θ)
+    - y = r * sin(Θ)
+  - (x, y) to (r, Θ):
+    - r = (x^2 + y^2)^0.5
+    - Θ = atan2(y, x))
+  - 利用角度畫多(n)邊型
+    - Θ = 360 / n
+    - xi = r * cos(Θ * ni)
+      yi = r * sin(Θ * ni)

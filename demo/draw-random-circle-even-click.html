@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:400,700i,900" rel="stylesheet"> -->
+</head>
+
+<body>
+  <canvas id="canvas">
+    這裡有個 canvas，但您的瀏覽器不支援！
+  </canvas>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const $w = canvas.offsetWidth;
+    const $h = canvas.offsetHeight;
+
+    const drawer = ctx => {
+      return {
+        context: ctx,
+        point(x, y, r, fillStyle, strokeStyle) {
+          // console.log(
+          //   `x=${x}`,
+          //   `y=${y}`,
+          //   `r=${r}`,
+          //   `fillStyle=${fillStyle}`,
+          //   `strokeStyle=${strokeStyle}`
+          // );
+          this.context.save();
+          this.context.beginPath();
+          this.context.arc(x, y, r, 0, Math.PI * 2, false);
+          if (fillStyle) {
+            this.context.fillStyle = fillStyle;
+            this.context.fill();
+          }
+          if (strokeStyle) {
+            this.context.strokeStyle = strokeStyle;
+            this.context.stroke();
+          }
+          this.context.closePath();
+          this.context.restore();
+        }
+      };
+    };
+
+    const drawer1 = drawer(ctx);
+    const draw = n => {
+      ctx.clearRect(0, 0, $w, $h); // clear screen
+
+      // draw
+      Array.from(Array(n).keys()).forEach(i => {
+        const r = Math.floor(Math.random() * 5) + 1;
+        const x = Math.floor(Math.random() * $w) + 1;
+        const y = Math.floor(Math.random() * $h) + 1;
+        const color = r % 2 === 0 ? 'red' : 'green';
+        const fillStyle = x % 2 === 0 ? color : undefined;
+        const strokeStyle = y % 2 === 0 ? color : undefined;
+        ctx.moveTo(x, y); // remove the line between points
+        drawer1.point(x, y, r, fillStyle, strokeStyle);
+      });
+    };
+
+    canvas.addEventListener('click', function (e) {
+      window.requestAnimationFrame(() => draw(100));
+    });
+  </script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    #canvas {
+      background-color: #001D2E;
+    }
+  </style>
+</body>
+
+</html>
