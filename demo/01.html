@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body onload="draw();">
+  <canvas id="demo1">
+    這裡有個 canvas，但您的瀏覽器不支援！
+  </canvas>
+
+  <script>
+    const demo1 = document.querySelector("#demo1");
+    const ctx = demo1.getContext ? demo1.getContext("2d") : undefined;
+
+    if (ctx) {
+      ctx.fillStyle = "rgb(200, 0, 0)";
+      ctx.fillRect(10, 10, 55, 50); // x, y, width, height
+
+      ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
+      ctx.fillRect(30, 30, 55, 50);
+    } else {
+      document.write("Your browser doesn't support canvas");
+    }
+  </script>
+
+  <style>
+    #demo1 {
+      border: 1px solid #ccc;
+    }
+  </style>
+</body>
+
+</html>

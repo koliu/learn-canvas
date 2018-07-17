@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body onload="draw();">
+  <canvas id="demo1" width="800" height="600">
+    這裡有個 canvas，但您的瀏覽器不支援！
+  </canvas>
+
+  <script>
+    const demo1 = document.querySelector("#demo1");
+    const ctx = demo1.getContext ? demo1.getContext("2d") : undefined;
+
+    const triangle = new Path2D();
+    triangle.moveTo(0, 0);
+    triangle.lineTo(75, 0);
+    triangle.lineTo(75, 75);
+    triangle.closePath();
+
+    // 將原點移到 (100, 100)
+    ctx.translate(100, 100);
+    ctx.stroke(triangle);
+    let clear = 360 / 5;
+    const interval = setInterval(() => {
+      // ctx.save();
+      ctx.stroke(triangle);
+      ctx.rotate(5 * Math.PI / 180);
+      if (--clear <= 36) {
+        clearInterval(interval);
+      }
+    }, 100);
+  </script>
+
+  <style>
+    canvas {
+      border: 1px solid #ccc;
+    }
+  </style>
+</body>
+
+</html>

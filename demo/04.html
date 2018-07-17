@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body onload="draw();">
+  <canvas id="demo1">
+    這裡有個 canvas，但您的瀏覽器不支援！
+  </canvas>
+  <canvas id="demo2">
+    這裡有個 canvas，但您的瀏覽器不支援！
+  </canvas>
+
+  <script>
+    const demo1 = document.querySelector("#demo1");
+    const ctx = demo1.getContext ? demo1.getContext("2d") : undefined;
+    const ctx2 = demo2.getContext ? demo2.getContext("2d") : undefined;
+
+    // 三角形
+    const triangle = new Path2D();
+    triangle.moveTo(50, 50);
+    triangle.lineTo(75, 25);
+    triangle.lineTo(75, 75);
+    triangle.closePath();
+
+    // ctx.fill(triangle);
+    ctx.stroke(triangle);
+    ctx2.fill(triangle);
+
+    // SVG path
+    // M100 100: moveTo(100, 100)
+    // h 25: moveTo(125, 100)
+    // v 40: moveTo(125, 140)
+    // h -25: moveTo(100, 140)
+    // Z: closePath()
+    const rectangle = new Path2D("M100 100 h 25 v 40 h -25 Z");
+    ctx.stroke(rectangle);
+
+  </script>
+
+  <style>
+    canvas {
+      border: 1px solid #ccc;
+    }
+  </style>
+</body>
+
+</html>
