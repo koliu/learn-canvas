@@ -34,9 +34,9 @@
 
     // SVG path
     // M100 100: moveTo(100, 100)
-    // h 25: moveTo(125, 100)
-    // v 40: moveTo(125, 140)
-    // h -25: moveTo(100, 140)
+    // h 25: lineTo(125, 100)
+    // v 40: lineTo(125, 140)
+    // h -25: lineTo(100, 140)
     // Z: closePath()
     const rectangle = new Path2D("M100 100 h 25 v 40 h -25 Z");
     ctx.stroke(rectangle);
