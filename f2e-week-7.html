@@ -22,6 +22,7 @@
       blue: x => x ? `rgba(54, 118, 187, ${x})` : 'rgb(54, 118, 187)',
       bgBlue: x => x ? `rgba(0, 29, 46, ${x})` : 'rgb(0, 29, 46)',
       darkGreen: x => x ? `rgba(0, 255, 0, ${x})` : 'rgb(0, 255, 0)',
+      transparent: 'rbga(0, 0, 0, 0)'
     };
 
     const draw1 = document.querySelector("#draw1");
@@ -66,14 +67,8 @@
       }
       bolt() {
         const path = new Path2D();
-        // path.moveTo(0, 0);
-        // path.lineTo(this.unitX * -2.5, this.unitY * 3);
-        // path.lineTo(this.unitX * -1, this.unitY * 3);
-        // path.lineTo(0, 0);
-
-        // 同一 path 繪出的圖形重疊處會沒有填滿
         path.moveTo(this.unitX * 0, this.unitY * 0);
-        path.lineTo(this.unitX * 1.5 , this.unitY * 0);
+        path.lineTo(this.unitX * 1.5, this.unitY * 0);
         path.lineTo(this.unitX * -1, this.unitY * 2.5);
         path.closePath();
         return path;
@@ -82,7 +77,7 @@
 
     const icons = {
       battery: {
-        draw: function (ctx, x = 0, y = 0, scaleX = 1, scaleY = 1) {
+        draw: function (ctx, x = 0, y = 0, scaleX = 1, scaleY = 1, energy = 100) {
           ctx.translate(x, y);
           ctx.scale(scaleX, scaleY);
           ctx.save();
@@ -99,15 +94,24 @@
           // body
           ctx.save();
           ctx.fillStyle = colors.yellow();
+          ctx.strokeStyle = colors.yellow();
           ctx.translate(0, unit);
           ctx.fill(componentBattery.body());
+          ctx.stroke(componentBattery.body());
+          if (energy < 100) {
+            ctx.fillStyle = colors.bgBlue();
+            ctx.scale(1, (100 - energy) / 100)
+            ctx.fill(componentBattery.body());
+          }
           ctx.restore();
 
           // bottom
           ctx.save();
           ctx.fillStyle = colors.yellow();
+          ctx.strokeStyle = colors.yellow();
           ctx.translate(0, unit * 7.5);
           ctx.fill(componentBattery.foot());
+          ctx.stroke(componentBattery.foot());
           ctx.restore();
 
           // bolt
@@ -228,7 +232,7 @@
 
     ctx.moveTo($cx - 50, $cy - 50);
 
-    icons.battery.draw(ctx, $cx - 40, $cy - 59, 0.5, 0.45);
+    icons.battery.draw(ctx, $cx - 40, $cy - 59, 0.5, 0.45, 30);
   </script>
 
   <style>
