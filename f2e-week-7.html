@@ -66,16 +66,16 @@
       }
       bolt() {
         const path = new Path2D();
-        path.moveTo(0, 0);
-        path.lineTo(this.unitX * -2.5, this.unitY * 3);
-        path.lineTo(this.unitX * -1, this.unitY * 3);
-        path.lineTo(0, 0);
+        // path.moveTo(0, 0);
+        // path.lineTo(this.unitX * -2.5, this.unitY * 3);
+        // path.lineTo(this.unitX * -1, this.unitY * 3);
+        // path.lineTo(0, 0);
 
         // 同一 path 繪出的圖形重疊處會沒有填滿
-        // path.moveTo(this.unitX * -1, this.unitY * 2.5);
-        // path.lineTo(this.unitX * 0.5 , this.unitY * 2.5);
-        // path.lineTo(this.unitX * -2, this.unitY * 5);
-        // path.closePath();
+        path.moveTo(this.unitX * 0, this.unitY * 0);
+        path.lineTo(this.unitX * 1.5 , this.unitY * 0);
+        path.lineTo(this.unitX * -1, this.unitY * 2.5);
+        path.closePath();
         return path;
       }
     };
@@ -110,20 +110,16 @@
           ctx.fill(componentBattery.foot());
           ctx.restore();
 
-          // bolt top
+          // bolt
           ctx.save();
           ctx.fillStyle = colors.white();
-          ctx.translate(3 * unit, unit * 1.5);
+          ctx.translate(unit * 2, unit * 3.75);
           ctx.fill(componentBattery.bolt(), "nonzero");
-          ctx.restore();
-          // bolt bottom
-          // 同一 path 繪出的圖形重疊處會沒有填滿，所以改用 rotate          
-          ctx.save();
-          ctx.fillStyle = colors.white();
-          ctx.translate(1 * unit, unit * 6.5);
+          ctx.translate(0, unit * 0.5);
           ctx.rotate(Math.PI);
           ctx.fill(componentBattery.bolt(), "nonzero");
           ctx.restore();
+
         }
       }
     }
