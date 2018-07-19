@@ -1,4 +1,5 @@
 import util from './canvas-util.js';
+
 class Ship {
   constructor(globalAttributes, ctx, args) {
     this.global = globalAttributes;
