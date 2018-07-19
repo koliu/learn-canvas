@@ -14,6 +14,18 @@
   - 若套用 CSS 寬高時畫面有扭曲現象，可以試著使用 canvas 標籤來設定的寬高
 ```
 
+或是直接完全由 JS 產生：
+
+```js
+const canvas = document.createElement('canvas');
+canvas.width = 1024;
+canvas.height = 768;
+canvas.style.width = '1024px';
+canvas.style.height = '768px';
+document.body.appendChild(canvas);
+```
+
+
 ## 針對不支援時顯示替代內容
 
 ```html
@@ -95,6 +107,8 @@ arc(x, y, radius, startAngle, endAngle, anticlockwise);
 - lineJoin: 設定線條和線條間接合處的樣式。
 - miterLimit: 限制當兩條線相交時交接處最大長度；所謂交接處長度(miter length)是指線條交接處內角頂點到外角頂點的長度。
 
+#### 光暈
+
 ---
 
 ### 繪製起始點的移動
@@ -167,7 +181,7 @@ References:
 ### 動畫
 
 - setInterval(update, time)
-- requestAnimationFrame(update)
+- requestAnimationFrame(update): 向瀏覽器請求更新畫面(非固定時間)
 - 更新影格：
   - clearRect 或 fillRect
   - 覆蓋前次繪製的圖形
@@ -182,7 +196,7 @@ References:
 ### 程式結構
 
 1. init: 初始化會使用到的物件及參數
-2. update: 更新邏輯
+2. update: 更新邏輯，如位置
 3. draw: 更新畫面
 
 ```js

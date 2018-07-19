@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>F2E Week 7 - Canvas</title>
+</head>
+
+<body>
+  <script type="module">
+    import util from './js/canvas-util.js';
+    import f2e from './js/f2e-week-7.js';
+    
+    // init for document
+    document.body.style.backgroundColor = f2e.colors.darkBlue();
+    const global = {
+      w: window.innerWidth,
+      h: window.innerHeight,
+      origin: {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2
+      },
+      unitW: 10,
+      unitH: 10,
+      fontFamily: 'Roboto,Arial,微軟正黑體',
+    };
+
+    
+    const rt = { count: 0, interval: undefined};
+    const canvas = util.createCanvas();
+    
+    let ship;
+    const init = () => {
+      ship = new f2e.components.ship(global, canvas.ctx, {
+        x: global.origin.x,
+        y: global.origin.y,
+        r: 60,
+        r_outer: 90,
+        r_shield: 110,
+        deg: 0
+      });
+    }
+    const update = () => {
+      ship.x += 5,
+      ship.y += 5
+
+      if (rt.count < 0) {
+        clearInterval(rt.interval);
+      }
+      rt.count--;
+    }
+    const draw = () => {
+      ship.draw();
+
+      if (rt.count > 0) {
+        requestAnimationFrame(draw);
+      }
+    }
+
+    init();
+    rt.interval = setInterval(update, 1000 / 24);
+    requestAnimationFrame(draw);
+
+
+    window.addEventListener('resize', function () {util.resizeByWindow(canvas, 'min-side')}, false);
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+  </style>
+</body>
+
+</html>
