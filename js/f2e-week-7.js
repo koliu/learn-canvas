@@ -10,7 +10,7 @@ export default {
     blue: (opacity = 1) => `rgba(54, 118, 187, ${opacity})`,
     darkBlue: (opacity = 1) => `rgba(0, 29, 46, ${opacity})`,
     darkGreen: (opacity = 1) => `rgba(0, 255, 0, ${opacity})`,
-    transparent: () => 'rbga(0, 0, 0, 0)'
+    transparent: () => 'rgba(0, 0, 0, 0)'
   },
   components: {
     ship,

@@ -64,22 +64,21 @@
         r: 60,
         r_outer: 90,
         r_shield: 110,
-        deg: 0
+        deg: 0,
+        weapons: [f2e.components.bullet],
+        weapon: 0
       });
-
-      
-      
     }
     const update = () => {
-      // ship.x += 5,
-      // ship.y += 5,
+      ctx.save();
       ship.deg = global.mousePos.x / 2;
       // console.log(ship.deg, global.mousePos.x, global.mousePos.y);
       shipBullets.forEach((bullet, index) => {
         // Remove the bullet when out of canvas bounds
-        if (Math.abs(bullet.x) > canvas.width || Math.abs(bullet.y) > canvas.height) {
-          shipBullets.shift(index);
-          // console.log(shipBullets);
+        if (bullet.current.x >= canvas.width || bullet.current.x < 0
+         || bullet.current.y >= canvas.height || bullet.current.y < 0
+        ) {
+          shipBullets.splice(index, 1);
           return;
         }
         bullet.update();
@@ -89,8 +88,10 @@
         clearInterval(rt.interval);
       }
       rt.count--;
+      ctx.restore();
     }
     const draw = () => {
+      ctx.save();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ship.draw();
       shipBullets.forEach(e => e.draw());
@@ -100,27 +101,50 @@
       if (rt.count > 0) {
         requestAnimationFrame(draw);
       }
+      ctx.restore();
     }
 
     init();
     rt.interval = setInterval(update, 1000 / 24);
     requestAnimationFrame(draw);
 
-    canvas.addEventListener('mousemove', (evt) => {
-      global.mousePos.x = evt.x;
-      global.mousePos.y = evt.y;
-      // console.log(global.mousePos.x, global.mousePos.y);
-    }, false);
-    canvas.addEventListener('click', () => {
-      const bullet = new f2e.components.bullet({
+    const createShipBullet = () => {
+      const bullet = new ship.weapons[ship.weapon]({
         global,
         ctx,
-        x: global.origin.x,
-        y: global.origin.y,
+        x: ship.x,
+        y: ship.y,
+        r: ship.r_outer + 17,
         deg: ship.deg
       });
       shipBullets.push(bullet);
-      bullet.log();
+    };
+
+    canvas.addEventListener('mousemove', (evt) => {
+      global.mousePos.x = evt.x;
+      global.mousePos.y = evt.y;
+    }, false);
+    window.addEventListener('keydown', (evt) => {
+      const key = event.which || event.keyCode;
+      console.log(key);
+      switch (key) {
+        case 67: // change weapon of ship
+          ship.weapon = ship.weapon < ship.weapons.length - 1
+                        ? ship.weapon++
+                        : 0;
+        case 32:
+          createShipBullet();
+          break;
+        case 39:
+          ship.deg -= 10;
+          break;
+        case 37:
+          ship.deg += 10;
+          break;
+      }
+    });
+    canvas.addEventListener('click', () => {
+      createShipBullet();
     });
     window.addEventListener('resize', function () {util.resizeByWindow(canvas, 'min-side')}, false);
   </script>
