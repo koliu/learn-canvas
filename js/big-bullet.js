@@ -2,17 +2,20 @@ import util from './canvas-util.js';
 import f2e from './f2e-week-7.js';
 import Weapon from './weapon.js';
 
-class Bullet extends Weapon {
+class BigBullet extends Weapon {
   constructor(args) {
     super(args);
-    this.speed = 4;
-    this.strength = 1;
-    this.width = 20;
-    this.height = 10;
+    this.speed = 3;
+    this.strength = 2;
+    this.width = 30;
+    this.height = 30;
     this.color = f2e.colors.red(0.7);
     this.borderColor = f2e.colors.yellow(0.9);
     this.shadowColor = f2e.colors.white(0.9);
     this.shadowBlur = 3;
+
+    // adjust init position
+    this.r += 10;
   }
 
   drawBullet() {
@@ -29,4 +32,4 @@ class Bullet extends Weapon {
 
 }
 
-export default Bullet;
+export default BigBullet;

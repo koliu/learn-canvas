@@ -65,10 +65,11 @@
         r_outer: 90,
         r_shield: 110,
         deg: 0,
-        weapons: [f2e.components.bullet],
+        weapons: [f2e.components.bullet, f2e.components.bigBullet],
         weapon: 0
       });
     }
+
     const update = () => {
       ctx.save();
       ship.deg = global.mousePos.x / 2;
@@ -90,6 +91,7 @@
       rt.count--;
       ctx.restore();
     }
+
     const draw = () => {
       ctx.save();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -128,19 +130,24 @@
       const key = event.which || event.keyCode;
       console.log(key);
       switch (key) {
-        case 67: // change weapon of ship
-          ship.weapon = ship.weapon < ship.weapons.length - 1
-                        ? ship.weapon++
-                        : 0;
-        case 32:
+        case 67: // c: change weapon of ship
+          if (ship.weapon < ship.weapons.length - 1) {
+            ship.weapon++;
+          } else {
+            ship.weapon = 0;
+          }
+          break;
+        case 32: // space: pause
+          break;
+        case 83: // s: shot
           createShipBullet();
           break;
-        case 39:
-          ship.deg -= 10;
-          break;
-        case 37:
-          ship.deg += 10;
-          break;
+        // case 39:
+        //   ship.deg -= 10;
+        //   break;
+        // case 37:
+        //   ship.deg += 10;
+        //   break;
       }
     });
     canvas.addEventListener('click', () => {

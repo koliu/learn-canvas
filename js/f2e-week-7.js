@@ -1,6 +1,7 @@
 import util from './canvas-util.js';
 import ship from './ship.js';
 import bullet from './bullet.js';
+import bigBullet from './big-bullet.js';
 
 export default {
   colors: {
@@ -14,6 +15,7 @@ export default {
   },
   components: {
     ship,
-    bullet
+    bullet,
+    bigBullet
   }
 }
