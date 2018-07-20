@@ -17,5 +17,6 @@ export default {
     ship,
     bullet,
     bigBullet
-  }
+  },
+  fontFamily: 'Roboto,Arial,微軟正黑體'
 }
