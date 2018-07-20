@@ -28,11 +28,14 @@
       mousePos: {
         x: 0,
         y: 0
+      },
+      animations: {
+        updateId: undefined,
+        drawId: undefined,
+        pause: false
       }
     };
     
-    
-    const rt = { count: 99999, interval: undefined};
     const canvas = util.createCanvas();
     const ctx = canvas.ctx;
     
@@ -54,6 +57,15 @@
       ctx.fillText(`(${global.mousePos.x},${global.mousePos.y})`, 3, -8);
       ctx.restore();
     };
+
+    const cancelAnimation = (args) => {
+      if(!args && !args.pause) {
+        return;
+      }
+      args.drawId && window.cancelAnimationFrame(args.drawId);
+      args.updateId && window.clearInterval(args.updateId);
+      args.pause = true;
+    }
     
     let ship;
     const shipBullets = [];
@@ -84,11 +96,7 @@
         }
         bullet.update();
       });
-      
-      if (rt.count < 0) {
-        clearInterval(rt.interval);
-      }
-      rt.count--;
+
       ctx.restore();
     }
 
@@ -100,15 +108,17 @@
 
       drawMousePosition();
 
-      if (rt.count > 0) {
-        requestAnimationFrame(draw);
-      }
+      global.animations.drawId = requestAnimationFrame(draw);
       ctx.restore();
     }
 
     init();
-    rt.interval = setInterval(update, 1000 / 24);
-    requestAnimationFrame(draw);
+    const run = () => {
+      global.animations.updateId = window.setInterval(update, 1000 / 24);
+      global.animations.drawId = requestAnimationFrame(draw);
+      console.log(global.animations);
+    };
+    run();
 
     const createShipBullet = () => {
       const bullet = new ship.weapons[ship.weapon]({
@@ -138,6 +148,12 @@
           }
           break;
         case 32: // space: pause
+          if (global.animations.pause) {
+            run();
+            global.animations.pause = false;
+          } else {
+            cancelAnimation(global.animations);
+          }
           break;
         case 83: // s: shot
           createShipBullet();
