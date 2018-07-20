@@ -56,8 +56,9 @@
     };
     
     let ship;
+    const shipBullets = [];
     const init = () => {
-      ship = new f2e.components.ship(global, canvas.ctx, {
+      ship = new f2e.components.ship(global, ctx, {
         x: global.origin.x,
         y: global.origin.y,
         r: 60,
@@ -65,12 +66,23 @@
         r_shield: 110,
         deg: 0
       });
+
+      
+      
     }
     const update = () => {
       // ship.x += 5,
       // ship.y += 5,
       ship.deg = global.mousePos.x / 2;
-      console.log(ship.deg, global.mousePos.x, global.mousePos.y);
+      // console.log(ship.deg, global.mousePos.x, global.mousePos.y);
+      shipBullets.forEach((bullet, index) => {
+        if (Math.abs(bullet.x) > canvas.width || Math.abs(bullet.y) > canvas.height) {
+          shipBullets.pop(index);
+          console.log(shipBullets);
+          return;
+        }
+        bullet.update();
+      });
       
       if (rt.count < 0) {
         clearInterval(rt.interval);
@@ -80,6 +92,7 @@
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ship.draw();
+      shipBullets.forEach(e => e.draw());
 
       drawMousePosition();
 
@@ -97,6 +110,19 @@
       global.mousePos.y = evt.y;
       // console.log(global.mousePos.x, global.mousePos.y);
     }, false);
+    canvas.addEventListener('click', () => {
+      const bullet = new f2e.components.bullet({
+        global,
+        ctx,
+        x: global.origin.x,
+        y: global.origin.y,
+        deg: ship.deg,
+        speed: 4,
+        strength: 1,
+      });
+      shipBullets.push(bullet);
+      bullet.log();
+    });
     window.addEventListener('resize', function () {util.resizeByWindow(canvas, 'min-side')}, false);
   </script>
   <style>

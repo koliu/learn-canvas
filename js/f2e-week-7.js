@@ -1,5 +1,6 @@
 import util from './canvas-util.js';
 import ship from './ship.js';
+import bullet from './bullet.js';
 
 export default {
   colors: {
@@ -12,6 +13,7 @@ export default {
     transparent: () => 'rbga(0, 0, 0, 0)'
   },
   components: {
-    ship
+    ship,
+    bullet
   }
 }

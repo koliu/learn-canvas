@@ -9,7 +9,7 @@ class Ship {
     this.r = 1;
     this.r_outer = 31;
     this.r_shield = 61;
-    this.deg = util.degToPI(0);
+    this.deg = 0;
     Object.assign(this, args);
   }
 
