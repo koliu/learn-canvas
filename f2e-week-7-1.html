@@ -76,9 +76,10 @@
       ship.deg = global.mousePos.x / 2;
       // console.log(ship.deg, global.mousePos.x, global.mousePos.y);
       shipBullets.forEach((bullet, index) => {
+        // Remove the bullet when out of canvas bounds
         if (Math.abs(bullet.x) > canvas.width || Math.abs(bullet.y) > canvas.height) {
           shipBullets.pop(index);
-          console.log(shipBullets);
+          // console.log(shipBullets);
           return;
         }
         bullet.update();
@@ -116,9 +117,7 @@
         ctx,
         x: global.origin.x,
         y: global.origin.y,
-        deg: ship.deg,
-        speed: 4,
-        strength: 1,
+        deg: ship.deg
       });
       shipBullets.push(bullet);
       bullet.log();

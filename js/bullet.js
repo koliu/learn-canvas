@@ -8,8 +8,6 @@ class Default {
     this.x = 0;
     this.y = 0;
     this.deg = 0;
-    this.speed = 1;
-    this.strength = 1;
     Object.assign(this, args);
   }
 
@@ -43,13 +41,20 @@ class Default {
 class Bullet extends Default {
   constructor(args) {
     super(args);
-
+    this.speed = 4;
+    this.strength = 1;
+    this.width = 20;
+    this.height = 10;
+    this.color = f2e.colors.red(0.7);
+    this.borderColor = f2e.colors.yellow(0.9);
   }
 
   drawBullet() {
     const ctx = this.ctx;
-    ctx.fillStyle = f2e.colors.red(0.7);
-    ctx.fillRect(0, 0, 2, 2);
+    ctx.fillStyle = this.color;
+    ctx.fillRect(0, 0, this.width, this.height);
+    ctx.strokeStyle = this.borderColor;
+    ctx.strokeRect(0, 0, this.width, this.height);
   }
 
 }
