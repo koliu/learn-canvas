@@ -218,6 +218,26 @@ requestAnimationFrame(draw); // 儘快刷新畫面(不定時)
 
 ```
 
+### 暫停/繼續功能
+
+> 暫停：清除 Interval 及 requestAnimationFrame
+> 繼續：重建 Interval 及 requestAnimationFrame
+
+```js
+let drawId;
+let updateId;
+if (pause) {
+  updateId = window.setInterval(update, 1000 / 24);
+  drawId = requestAnimationFrame(draw);
+  pause = false;
+} else {
+  drawId = window.cancelAnimationFrame(drawId);
+  updateId && window.clearInterval(updateId);
+  pause = true;
+}
+
+```
+
 ### 物理基礎
 
 - 無法精確描述軌跡，但可利用兩兩變化量來累積差異(微分概念)

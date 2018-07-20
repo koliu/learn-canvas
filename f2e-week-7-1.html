@@ -116,7 +116,6 @@
     const run = () => {
       global.animations.updateId = window.setInterval(update, 1000 / 24);
       global.animations.drawId = requestAnimationFrame(draw);
-      console.log(global.animations);
     };
     run();
 
@@ -138,7 +137,7 @@
     }, false);
     window.addEventListener('keydown', (evt) => {
       const key = event.which || event.keyCode;
-      console.log(key);
+      // console.log(key);
       switch (key) {
         case 67: // c: change weapon of ship
           if (ship.weapon < ship.weapons.length - 1) {
