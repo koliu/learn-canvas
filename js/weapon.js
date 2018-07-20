@@ -12,19 +12,25 @@ class Weapon {
       x: 0,
       y: 0
     }
+
+    this._renewCurrentPosition();
   }
 
   update() {
     this.r += this.speed;
-    const angle = util.degToPI(this.deg - 90);
-    this.current.x = this.x + this.r * Math.cos(angle);
-    this.current.y = this.y + this.r * Math.sin(angle);
+    this._renewCurrentPosition();
     // console.log(
     //   `x=${this.x}`,
     //   `y=${this.y}`,
     //   `r=${this.r}`,
     //   `current=${JSON.stringify(this.current)}`,
     // );
+  }
+
+  _renewCurrentPosition() {
+    const angle = util.degToPI(this.deg - 90);
+    this.current.x = this.x + this.r * Math.cos(angle);
+    this.current.y = this.y + this.r * Math.sin(angle);
   }
 
   draw() {

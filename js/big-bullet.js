@@ -4,7 +4,11 @@ import Weapon from './weapon.js';
 
 class BigBullet extends Weapon {
   constructor(args) {
-    super(args);
+    super((() => {
+      // adjust init position
+      args.r += 15;
+      return args;
+    })());
     this.speed = 3;
     this.strength = 2;
     this.width = 30;
@@ -13,9 +17,6 @@ class BigBullet extends Weapon {
     this.borderColor = f2e.colors.yellow(0.9);
     this.shadowColor = f2e.colors.white(0.9);
     this.shadowBlur = 3;
-
-    // adjust init position
-    this.r += 10;
   }
 
   drawBullet() {
