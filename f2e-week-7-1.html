@@ -78,7 +78,7 @@
       shipBullets.forEach((bullet, index) => {
         // Remove the bullet when out of canvas bounds
         if (Math.abs(bullet.x) > canvas.width || Math.abs(bullet.y) > canvas.height) {
-          shipBullets.pop(index);
+          shipBullets.shift(index);
           // console.log(shipBullets);
           return;
         }
