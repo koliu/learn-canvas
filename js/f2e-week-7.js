@@ -3,6 +3,7 @@ import ship from './ship.js';
 import bullet from './bullet.js';
 import bigBullet from './big-bullet.js';
 import bulletKO from './bullet-ko.js';
+import battery from './components/battery.js';
 
 
 export default {
@@ -19,7 +20,8 @@ export default {
     ship,
     bullet,
     bigBullet,
-    bulletKO
+    bulletKO,
+    battery
   },
   fontFamily: 'Roboto,Arial,微軟正黑體',
   resources: {

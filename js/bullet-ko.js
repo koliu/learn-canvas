@@ -24,7 +24,7 @@ class BulletKO extends Weapon {
     const o = w / 2;
 
     const ctx = this.ctx;
-    ctx.drawImage(f2e.resources.ko, adjust, adjust, w, w);
+    ctx.drawImage(f2e.resources.ko, adjust, adjust - 15, w, w);
     this.shrink += 5;
 
     // 這段很怪，fillRect 正常，但 arc 卻是渲染 ship.cannon!!
@@ -46,7 +46,6 @@ class BulletKO extends Weapon {
       w *= scale;
       h *= scale;
     }
-    // console.log('ddd', w, h, adjustX, adjustY, scale);
     ctx.drawImage(f2e.resources.ko, this.width * scale * 0.1, this.height * scale * 0.1, w, h);
   }
 
