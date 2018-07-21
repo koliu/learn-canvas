@@ -6,7 +6,7 @@ export default {
   animations: {
     updateId: undefined,
     drawId: undefined,
-    pause: false
+    pause: true
   },
   global: {
     w: window.innerWidth,

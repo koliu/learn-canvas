@@ -46,7 +46,7 @@ class BulletKO extends Weapon {
       w *= scale;
       h *= scale;
     }
-    console.log('ddd', w, h, adjustX, adjustY, scale);
+    // console.log('ddd', w, h, adjustX, adjustY, scale);
     ctx.drawImage(f2e.resources.ko, this.width * scale * 0.1, this.height * scale * 0.1, w, h);
   }
 
