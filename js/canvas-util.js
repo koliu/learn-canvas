@@ -12,6 +12,7 @@ export default {
     canvas.width = def.width;
     canvas.height = def.height;
     canvas.ctx = canvas.getContext('2d');
+    canvas.innerText = 'Your browser does not support canvas';
     def.context.body.appendChild(canvas);
     return canvas;
   },

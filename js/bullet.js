@@ -16,15 +16,26 @@ class Bullet extends Weapon {
   }
 
   drawBullet() {
+    const adjustX = -this.width / 2;
+    const adjustY = -this.height / 2;
+    this._doDraw(adjustX, adjustY);
+  }
+
+  _doDraw(adjustX, adjustY, scale) {
     const ctx = this.ctx;
     ctx.shadowBlur = this.shadowBlur;
     ctx.shadowColor = this.shadowColor;
+    let w = this.width;
+    let h = this.height;
+    if (scale) {
+      w *= scale;
+      h *= scale;
+    }
+    // console.log('bullet', scale, w, h);
     ctx.fillStyle = this.color;
-    const adjustX = -this.width / 2;
-    const adjustY = -this.height / 2;
-    ctx.fillRect(adjustX, adjustY, this.width, this.height);
+    ctx.fillRect(adjustX, adjustY, w, h);
     ctx.strokeStyle = this.borderColor;
-    ctx.strokeRect(adjustX, adjustY, this.width, this.height);
+    ctx.strokeRect(adjustX, adjustY, w, h);
   }
 
 }

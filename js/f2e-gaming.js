@@ -8,25 +8,26 @@ export default {
     drawId: undefined,
     pause: false
   },
+  global: {
+    w: window.innerWidth,
+    h: window.innerHeight,
+    origin: {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2
+    },
+    unitW: 10,
+    unitH: 10,
+    fontFamily: f2e.fontFamily,
+    mousePos: {
+      x: 0,
+      y: 0
+    }
+  },
   init() {
     // init for document
     document.body.style.backgroundColor = f2e.colors.darkBlue();
-    const global = {
-      w: window.innerWidth,
-      h: window.innerHeight,
-      origin: {
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2
-      },
-      unitW: 10,
-      unitH: 10,
-      fontFamily: f2e.fontFamily,
-      mousePos: {
-        x: 0,
-        y: 0
-      }
-    };
-    console.log(this);
+    const global = this.global;
+
     const canvas = this.canvas = util.createCanvas('gaming', {});
     const ctx = canvas.ctx;
 
@@ -49,15 +50,6 @@ export default {
       ctx.restore();
     };
 
-    const cancelAnimation = (args) => {
-      if (!args && !args.pause) {
-        return;
-      }
-      args.drawId && window.cancelAnimationFrame(args.drawId);
-      args.updateId && window.clearInterval(args.updateId);
-      args.pause = true;
-    }
-
     let ship;
     const shipBullets = [];
     const init = () => {
@@ -68,8 +60,9 @@ export default {
         r_outer: 90,
         r_shield: 110,
         deg: 0,
-        weapons: [f2e.components.bullet, f2e.components.bigBullet],
-        weapon: 0
+        weapons: [f2e.components.bullet, f2e.components.bigBullet, f2e.components.bulletKO],
+        ammo: [5, 2, 99],
+        currentWeapon: 0
       });
     }
 
@@ -98,6 +91,7 @@ export default {
       shipBullets.forEach(e => e.draw());
 
       drawMousePosition();
+      this.drawKeyButtons(ship);
 
       this.animations.drawId = requestAnimationFrame(draw);
       ctx.restore();
@@ -111,13 +105,18 @@ export default {
     run();
 
     const createShipBullet = () => {
-      const bullet = new ship.weapons[ship.weapon]({
+      if (ship.ammo[ship.currentWeapon] <= 0) {
+        return;
+      }
+      ship.ammo[ship.currentWeapon]--;
+      const bullet = new ship.weapons[ship.currentWeapon]({
         global,
         ctx,
         x: ship.x,
         y: ship.y,
         r: ship.r_outer + 17,
-        deg: ship.deg
+        deg: ship.deg,
+        ammo: ship.ammo[ship.currentWeapon]
       });
       shipBullets.push(bullet);
     };
@@ -131,10 +130,10 @@ export default {
       // console.log(key);
       switch (key) {
         case 67: // c: change weapon of ship
-          if (ship.weapon < ship.weapons.length - 1) {
-            ship.weapon++;
+          if (ship.currentWeapon < ship.weapons.length - 1) {
+            ship.currentWeapon++;
           } else {
-            ship.weapon = 0;
+            ship.currentWeapon = 0;
           }
           break;
         case 32: // space: pause
@@ -142,7 +141,7 @@ export default {
             run();
             this.animations.pause = false;
           } else {
-            cancelAnimation(this.animations);
+            this.cancelAnimation();
           }
           break;
         case 83: // s: shot
@@ -162,5 +161,54 @@ export default {
     window.addEventListener('resize', function () {
       util.resizeByWindow(canvas, 'min-side')
     }, false);
+  },
+  cancelAnimation() {
+    if (this.animations.pause) {
+      return;
+    }
+    this.animations.drawId && window.cancelAnimationFrame(this.animations.drawId);
+    this.animations.updateId && window.clearInterval(this.animations.updateId);
+    this.animations.pause = true;
+  },
+  drawKeyButtons(ship) {
+    const ctx = this.canvas.ctx;
+    ctx.save();
+
+    let pos = {
+      x: 5,
+      y: 10
+    };
+    const global = this.global;
+    ship.weapons.forEach((e, i) => {
+      ctx.save();
+
+      const args = {
+        x: pos.x,
+        y: pos.y,
+        width: 40,
+        height: 40,
+        ammo: ship.ammo[i],
+        paddingX: 5,
+        paddingY: 20
+      }
+      args.y += (args.height + args.paddingY) * i;
+
+      if (i === ship.currentWeapon) {
+        args.strokeStyle = f2e.colors.red(0.6);
+        args.fillStyle = f2e.colors.yellow(0.3);
+      }
+
+      new e({
+        global,
+        ctx
+      }).drawIcon(args);
+
+      ctx.restore();
+    });
+
+    ctx.restore();
+  },
+  destroy() {
+    this.cancelAnimation();
   }
 }

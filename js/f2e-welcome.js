@@ -210,16 +210,13 @@ export default {
 
     icons.battery.draw(ctx, $cx - 40, $cy - 59, 0.5, 0.45, 30);
 
+    this.appendStartButton();
+  },
+  appendStartButton() {
     const start = this.start = document.createElement("button");
     start.innerText = "Start Game";
+    start.id = "start-game";
     document.body.appendChild(start);
-    start.style = "border: 2px solid white; line-height: 24px; color: white; font-size: 16px; padding: 6px 20px; border-radius: 50px; background-color: transparent; position: absolute; top: calc(50% + 35px); left: calc(50% - 70px); z-index: 3; width: 140px; cursor: pointer";
-    start.addEventListener("mouseover", () => {
-      start.style['background-color'] = 'rgba(255, 255, 255, 0.3)';
-    });
-    start.addEventListener("mouseout", () => {
-      start.style['background-color'] = 'rgba(255, 255, 255, 0)';
-    });
   },
   destroy() {
     this.canvas.remove();

@@ -2,6 +2,8 @@ import util from './canvas-util.js';
 import ship from './ship.js';
 import bullet from './bullet.js';
 import bigBullet from './big-bullet.js';
+import bulletKO from './bullet-ko.js';
+
 
 export default {
   colors: {
@@ -16,7 +18,16 @@ export default {
   components: {
     ship,
     bullet,
-    bigBullet
+    bigBullet,
+    bulletKO
   },
-  fontFamily: 'Roboto,Arial,微軟正黑體'
+  fontFamily: 'Roboto,Arial,微軟正黑體',
+  resources: {
+    ko: (() => {
+      let img = new Image();
+      img.src = '../img/KO-red-200.png';
+      return img;
+    })()
+  }
+
 }
