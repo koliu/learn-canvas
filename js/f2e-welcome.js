@@ -4,6 +4,11 @@ import f2e from './f2e-week-7.js';
 export default {
   canvas: undefined,
   start: undefined,
+  animations: {
+    batteryEnergy: undefined,
+    outerCircle: undefined,
+    pause: false
+  },
   init() {
     const colors = f2e.colors;
     const canvas = this.canvas = util.createCanvas('welcome', {
@@ -108,6 +113,7 @@ export default {
 
     const circle = new Path2D();
     circle.arc(0, 0, $h / 2, 0, $angle360, true);
+    circle.closePath();
 
     f2e.drawGrid(canvas, ctx, {
       strokeStyle: colors.darkGreen(0.3),
@@ -190,7 +196,12 @@ export default {
 
     ctx.moveTo($cx - 50, $cy - 50);
 
-    icons.battery.draw(ctx, $cx - 40, $cy - 59, 0.5, 0.45, 30);
+    let batteryEnergy = 0;
+    this.animations.batteryEnergy = setInterval(() => {
+      ctx.save();
+      icons.battery.draw(ctx, $cx - 40, $cy - 59, 0.5, 0.45, (batteryEnergy >= 100) ? batteryEnergy = 0 : batteryEnergy += 5);
+      ctx.restore();
+    }, 100);
 
     this.appendStartButton();
   },
@@ -200,7 +211,16 @@ export default {
     start.id = "start-game";
     document.body.appendChild(start);
   },
+  cancelAnimation() {
+    if (this.animations.pause) {
+      return;
+    }
+    this.animations.batteryEnergy && window.cancelAnimationFrame(this.animations.batteryEnergy);
+    this.animations.outerCircle && window.clearInterval(this.animations.outerCircle);
+    this.animations.pause = true;
+  },
   destroy() {
+    this.cancelAnimation();
     this.canvas.remove();
     this.canvas = undefined;
     this.start.remove();
