@@ -126,6 +126,12 @@ export default {
         ammo: ship.ammo[ship.currentWeapon]
       });
       shipBullets.push(bullet);
+
+      // auto switch to next available weapon
+      if (ship.ammo[ship.currentWeapon] <= 0) {
+        const nextWeapon = ship.ammo.findIndex(e => e > 0);
+        ship.currentWeapon = nextWeapon > -1 ? nextWeapon : ship.currentWeapon;
+      }
     };
 
     canvas.addEventListener('mousemove', (evt) => {
