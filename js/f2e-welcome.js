@@ -106,34 +106,16 @@ export default {
 
     const ctx = canvas.ctx;
 
-    const lineX = new Path2D();
-    lineX.moveTo(0, 0);
-    lineX.lineTo($w, 0);
-    lineX.closePath();
-
-    const lineY = new Path2D();
-    lineY.moveTo(0, 0);
-    lineY.lineTo(0, $h);
-    lineY.closePath();
-
     const circle = new Path2D();
     circle.arc(0, 0, $h / 2, 0, $angle360, true);
 
+    f2e.drawGrid(canvas, ctx, {
+      strokeStyle: colors.darkGreen(0.3),
+      gridWidth: 20,
+      gridHeight: 20
+    });
+
     ctx.save();
-
-    ctx.strokeStyle = colors.darkGreen(0.3);
-    // draw grid lines
-    Array.from(Array($divides - 1).keys()).forEach(i => {
-      const tempI = i + 1;
-
-      ctx.translate($bw * tempI, 0);
-      ctx.stroke(lineY);
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-      ctx.translate(0, $bh * tempI);
-      ctx.stroke(lineX);
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-    })
 
     let tempScale = 0.01;
     // draw origin

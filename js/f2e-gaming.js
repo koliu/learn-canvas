@@ -87,6 +87,13 @@ export default {
     const draw = () => {
       ctx.save();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      f2e.drawGrid(canvas, ctx, {
+        strokeStyle: f2e.colors.darkGreen(0.3),
+        gridWidth: 40,
+        gridHeight: 40
+      });
+
       ship.draw();
       shipBullets.forEach(e => e.draw());
 

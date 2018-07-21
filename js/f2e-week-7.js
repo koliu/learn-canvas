@@ -28,6 +28,55 @@ export default {
       img.src = '../img/KO-red-200.png';
       return img;
     })()
+  },
+  drawGrid(canvas, ctx, args) {
+    ctx.save();
+
+    const def = {
+      strokeStyle: this.colors.darkGreen(0.3),
+      lineWidth: 0.5,
+      boundary: {
+        w: canvas.width,
+        h: canvas.height
+      },
+      gridWidth: 10,
+      gridHeight: 10
+    }
+    Object.assign(def, args);
+
+    ctx.strokeStyle = def.strokeStyle;
+    ctx.lineWidth = def.lineWidth;
+
+    const lineY = new Path2D();
+    lineY.moveTo(0, 0);
+    lineY.lineTo(0, def.boundary.h);
+    lineY.closePath();
+
+    // draw columns
+    Array.from(Array(Math.floor(canvas.width / def.gridWidth)).keys())
+      .forEach(i => {
+        i++;
+
+        ctx.translate(def.gridWidth * i, 0);
+        ctx.stroke(lineY);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+      })
+
+    const lineX = new Path2D();
+    lineX.moveTo(0, 0);
+    lineX.lineTo(def.boundary.w, 0);
+    lineX.closePath();
+
+    // draw rows
+    Array.from(Array(Math.floor(canvas.height / def.gridHeight)).keys())
+      .forEach(i => {
+        i++;
+        ctx.translate(0, def.gridHeight * i);
+        ctx.stroke(lineX);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+      })
+
+    ctx.restore();
   }
 
 }
