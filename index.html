@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+</head>
+
+<body>
+  <div class="game-info">
+    <div class="wrap">
+      <ul class="content">
+        <li>歡迎來到 KO 的第一個 Canvas 作品</li>
+        <li>同時這也是 <a href="https://hackmd.io/N5yEjm2vSx6D41qAbJGDmw" target="_blank">F2E 第七週挑戰的主題</a></li>
+        <li>操作方式：</li>
+        <li>* Mouse 左右移：旋轉砲台</li>
+        <li>* Mouse click: 射擊</li>
+        <li>* [s]: 射擊</li>
+        <li>* [c]: 切換武器</li>
+        <li>* [space]: 暫停/繼續</li>
+        <li>&nbsp;</li>
+        <li>Click to enjoy...</li>
+      </ul>
+    </div>
+  </div>
+  <script type="module">
+    import welcome from './js/f2e-welcome.js';
+    import gaming from './js/f2e-gaming.js';
+    
+    welcome.init();
+
+    welcome.start.addEventListener("click", function() {
+      welcome.destroy();
+      gaming.init();
+
+      const gameInfo = document.querySelector('.game-info');
+      gameInfo.style['display'] = 'flex';
+      gameInfo.addEventListener("click", function () {
+        this.style['display'] = 'none';
+      });
+    });
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Roboto', sans-serif;
+    }
+    #welcome {
+      background-color: #001D2E;
+    }
+    #start-game {
+      background-color: transparent;
+      border: 2px solid white;
+      border-radius: 50px;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      left: calc(50% - 70px);
+      line-height: 24px;
+      padding: 6px 20px;
+      position: absolute;
+      top: calc(50% + 35px);
+      width: 140px;
+      z-index: 3;
+    }
+    #start-game:hover {
+      background-color: rgba(115, 255, 0, 0.3);
+    }
+
+    .game-info {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      position: fixed;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 888;
+    }
+
+    .game-info .wrap {
+      background-color: rgba(247, 211, 10, 0.8);
+      border-radius: 12px;
+      padding: 24px 42px;
+      height: 380px;
+      width: 640px;
+    }
+
+    .game-info .wrap .content {
+      display: flex;
+      flex-flow: column wrap;
+      font-size: 24px;
+      line-height: 32px;
+      list-style-type: none;
+    }
+  </style>
+</body>
+
+</html>
