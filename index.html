@@ -26,6 +26,7 @@
       </ul>
     </div>
   </div>
+  <image id="ko" class="ko" src="./img/KO-red-200.png"></image>
   <script type="module">
     import welcome from './js/f2e-welcome.js';
     import gaming from './js/f2e-gaming.js';
@@ -35,10 +36,12 @@
     welcome.start.addEventListener("click", function() {
       welcome.destroy();
       gaming.init();
+      gaming.pause();
 
       const gameInfo = document.querySelector('.game-info');
       gameInfo.style['display'] = 'flex';
       gameInfo.addEventListener("click", function () {
+        gaming.run();
         this.style['display'] = 'none';
       });
     });
@@ -107,6 +110,10 @@
       font-size: 24px;
       line-height: 32px;
       list-style-type: none;
+    }
+
+    .ko {
+      display: none;
     }
   </style>
 </body>

@@ -1,10 +1,9 @@
-import util from './canvas-util.js';
-import ship from './ship.js';
-import bullet from './bullet.js';
-import bigBullet from './big-bullet.js';
-import bulletKO from './bullet-ko.js';
-import battery from './components/battery.js';
-
+import util from "./canvas-util.js";
+import ship from "./ship.js";
+import bullet from "./bullet.js";
+import bigBullet from "./big-bullet.js";
+import bulletKO from "./bullet-ko.js";
+import battery from "./components/battery.js";
 
 export default {
   colors: {
@@ -14,7 +13,7 @@ export default {
     blue: (opacity = 1) => `rgba(54, 118, 187, ${opacity})`,
     darkBlue: (opacity = 1) => `rgba(0, 29, 46, ${opacity})`,
     darkGreen: (opacity = 1) => `rgba(0, 255, 0, ${opacity})`,
-    transparent: () => 'rgba(0, 0, 0, 0)'
+    transparent: () => "rgba(0, 0, 0, 0)"
   },
   components: {
     ship,
@@ -23,13 +22,9 @@ export default {
     bulletKO,
     battery
   },
-  fontFamily: 'Roboto,Arial,微軟正黑體',
+  fontFamily: "Roboto,Arial,微軟正黑體",
   resources: {
-    ko: (() => {
-      let img = new Image();
-      img.src = '../img/KO-red-200.png';
-      return img;
-    })()
+    ko: document.getElementById("ko")
   },
   drawGrid(canvas, ctx, args) {
     ctx.save();
@@ -43,7 +38,7 @@ export default {
       },
       gridWidth: 10,
       gridHeight: 10
-    }
+    };
     Object.assign(def, args);
 
     ctx.strokeStyle = def.strokeStyle;
@@ -55,14 +50,15 @@ export default {
     lineY.closePath();
 
     // draw columns
-    Array.from(Array(Math.floor(canvas.width / def.gridWidth)).keys())
-      .forEach(i => {
+    Array.from(Array(Math.floor(canvas.width / def.gridWidth)).keys()).forEach(
+      i => {
         i++;
 
         ctx.translate(def.gridWidth * i, 0);
         ctx.stroke(lineY);
         ctx.setTransform(1, 0, 0, 1, 0, 0);
-      })
+      }
+    );
 
     const lineX = new Path2D();
     lineX.moveTo(0, 0);
@@ -70,15 +66,15 @@ export default {
     lineX.closePath();
 
     // draw rows
-    Array.from(Array(Math.floor(canvas.height / def.gridHeight)).keys())
-      .forEach(i => {
-        i++;
-        ctx.translate(0, def.gridHeight * i);
-        ctx.stroke(lineX);
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-      })
+    Array.from(
+      Array(Math.floor(canvas.height / def.gridHeight)).keys()
+    ).forEach(i => {
+      i++;
+      ctx.translate(0, def.gridHeight * i);
+      ctx.stroke(lineX);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+    });
 
     ctx.restore();
   }
-
-}
+};
