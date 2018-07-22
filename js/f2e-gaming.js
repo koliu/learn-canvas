@@ -72,7 +72,12 @@ export default {
       // auto switch to next available weapon
       if (ship.ammo[ship.currentWeapon] <= 0) {
         const nextWeapon = ship.ammo.findIndex(e => e > 0);
-        ship.currentWeapon = nextWeapon > -1 ? nextWeapon : ship.currentWeapon;
+        // ship.currentWeapon = nextWeapon > -1 ? nextWeapon : ship.currentWeapon;
+        if (nextWeapon > -1) {
+          ship.currentWeapon = nextWeapon;
+        } else {
+          this.showGameOver();
+        }
       }
     };
 
@@ -117,12 +122,12 @@ export default {
           let index = key % 49;
           if (index < this.ship.weapons.length) this.ship.currentWeapon = index;
           break;
-        // case 39:
-        //   ship.deg -= 10;
-        //   break;
-        // case 37:
-        //   ship.deg += 10;
-        //   break;
+          // case 39:
+          //   ship.deg -= 10;
+          //   break;
+          // case 37:
+          //   ship.deg += 10;
+          //   break;
       }
     });
     canvas.addEventListener("click", () => {
@@ -130,7 +135,7 @@ export default {
     });
     window.addEventListener(
       "resize",
-      function() {
+      function () {
         util.resizeByWindow(canvas, "min-side");
       },
       false
@@ -265,5 +270,10 @@ export default {
   },
   destroy() {
     this.pause();
+    this.canvas.remove();
+    this.canvas = undefined;
+  },
+  showGameOver() {
+    document.getElementById("game-over").style["display"] = "flex";
   }
 };

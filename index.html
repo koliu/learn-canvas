@@ -7,6 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="./css/animate.css">
 </head>
 
 <body>
@@ -27,6 +28,11 @@
       </ul>
     </div>
   </div>
+  <div id="game-over" class="game-over">
+    <div class="content animated bounceInDown">
+      Game Over
+    </div>
+  </div>
   <image id="ko" class="ko" src="./img/KO-red-200.png"></image>
   <script type="module">
     import welcome from './js/f2e-welcome.js';
@@ -34,17 +40,28 @@
     
     welcome.init();
 
-    welcome.start.addEventListener("click", function() {
-      welcome.destroy();
-      gaming.init();
-      gaming.pause();
+    const addEventListenerToWelcomeStart = function() {
+      welcome.start.addEventListener("click", function() {
+        welcome.destroy();
+        gaming.init();
+        gaming.pause();
 
-      const gameInfo = document.querySelector('.game-info');
-      gameInfo.style['display'] = 'flex';
-      gameInfo.addEventListener("click", function () {
-        gaming.run();
-        this.style['display'] = 'none';
+        const gameInfo = document.querySelector('.game-info');
+        gameInfo.style['display'] = 'flex';
+        gameInfo.addEventListener("click", function () {
+          gaming.run();
+          this.style['display'] = 'none';
+        });
       });
+    }
+    addEventListenerToWelcomeStart();
+    
+
+    document.getElementById('game-over').addEventListener('click', function() {
+      gaming.destroy();
+      welcome.init();
+      addEventListenerToWelcomeStart();
+      this.style['display'] = 'none';
     });
   </script>
   <style>
@@ -86,10 +103,11 @@
       background-color: rgba(115, 255, 0, 0.3);
     }
 
-    .game-info {
+    .game-info, .game-over {
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.6);
+      cursor: pointer;
       position: fixed;
       display: none;
       justify-content: center;
@@ -111,6 +129,14 @@
       font-size: 24px;
       line-height: 32px;
       list-style-type: none;
+    }
+
+    .game-over {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+    .game-over .content {
+      font-size: 80px;
+      color: yellow;
     }
 
     .ko {

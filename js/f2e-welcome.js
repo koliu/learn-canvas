@@ -170,9 +170,6 @@ export default {
     document.body.appendChild(start);
   },
   cancelAnimation() {
-    if (this.animations.pause) {
-      return;
-    }
     this.animations.drawId &&
       window.cancelAnimationFrame(this.animations.drawId);
     this.animations.updateId && window.clearInterval(this.animations.updateId);
@@ -182,7 +179,6 @@ export default {
     this.cancelAnimation();
     this.canvas.remove();
     this.canvas = undefined;
-    this.start.remove();
-    this.start = undefined;
+    this.start.style['display'] = 'none';
   }
 };
