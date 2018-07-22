@@ -86,6 +86,7 @@ export default {
     );
     window.addEventListener("keydown", evt => {
       const key = event.which || event.keyCode;
+      // console.log(key);
       switch (key) {
         case 67: // c: change weapon of ship
           if (ship.currentWeapon < ship.weapons.length - 1) {
@@ -103,6 +104,18 @@ export default {
           break;
         case 83: // s: shot
           createShipBullet();
+          break;
+        case 49:
+        case 50:
+        case 51:
+        case 52:
+        case 53:
+        case 54:
+        case 55:
+        case 56:
+        case 57:
+          let index = key % 49;
+          if (index < this.ship.weapons.length) this.ship.currentWeapon = index;
           break;
         // case 39:
         //   ship.deg -= 10;
